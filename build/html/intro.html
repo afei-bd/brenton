@@ -1,0 +1,280 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>强化学习简介 &mdash; drl-course 1.0 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/translations.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="prev" title="Welcome to drl-course’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> drl-course
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">强化学习简介</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id2">强化学习的基本思想</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">强化学习的过程</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">drl-course</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>强化学习简介</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>强化学习简介<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>强化学习（Reinforcement Learning）是一类非常重要的机器学习方法。其目标是通过与环境的交互反馈，使智能体（agent）学习到激励最大化的行动策略（behave）。这些年，我们见证了强化学习取得了令人难以置信的进展。其中比较突出的，包括AlphaGo（DeepMind and the Deep Q learning architecture in 2014），OpenAI和PPO（2017）。</p>
+<p>在这个系列中，我们将重点关注解决强化学习问题的不同方法与架构，包括：Q-learning，Deep Q-learning，Policy Gradient，Actor Critic和PPO。</p>
+<p>在本章节将介绍：</p>
+<ul class="simple">
+<li><p>强化学习的基本思想：什么是强化学习？以及激励反馈是如何成为强化学习的核心思想的</p></li>
+<li><p>强化学习的3种重要方法</p></li>
+<li><p>深度强化学习中的『深度』是什么意思？</p></li>
+</ul>
+<p>掌握这些对我们深入理解并实现深度强化学习非常重要。</p>
+<div class="admonition-markov-decision-process admonition">
+<p class="admonition-title">前置知识: Markov Decision Process</p>
+<p>在概率论和统计学中，<em>Markov Decision Processes</em> (MDP) 提供了一个数学架构模型，刻画的是”如何在部分随机，部分可由决策者控制的状态下进行决策”的过程。强化学习的体系正是构建在MDP之上的。</p>
+<p>一个 <em>Markov</em> <em>Decision</em> <em>Process</em> 是由这样元组 <span class="math notranslate nohighlight">\(\left \langle S, A, P, R, \gamma \right \rangle\)</span> 组成，其中:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathcal{S}\)</span> 是一系列状态的集合；</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{A}\)</span> 是一系列动作的集合；</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{P}\)</span> 是状态转义概率矩阵，表示从状态 <span class="math notranslate nohighlight">\(s\)</span> 采取行动策略 <span class="math notranslate nohighlight">\(a\)</span> ，迁移到状态 <span class="math notranslate nohighlight">\(s'\)</span> 的概率： <span class="math notranslate nohighlight">\(P_{ss'}^a = \mathbb{P}[S_{t+1}=s' | S_t=s, A_t=a]\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{R}\)</span> 是激励函数，<span class="math notranslate nohighlight">\(R_s^a=\mathbb{E}[R_{t+1}|S_t=s, A_t=a]\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathcal{\gamma}\)</span> 是折扣因子，<span class="math notranslate nohighlight">\(\gamma \in [0,1]\)</span></p></li>
+</ul>
+<p>在这个基础之上，自然引申出 <span class="math notranslate nohighlight">\(\mathbf{policy}\)</span> 和 <span class="math notranslate nohighlight">\(\mathbf{return}\)</span> 的概念。</p>
+<ul class="simple">
+<li><p>Policy  <span class="math notranslate nohighlight">\(\pi\)</span>   是状态 <span class="math notranslate nohighlight">\(s\)</span> 和行动策略 <span class="math notranslate nohighlight">\(a\)</span> 的分布函数: <span class="math notranslate nohighlight">\(\pi(a|s) = \mathbb{P}[A_{t}=a | S_t=s]\)</span></p></li>
+<li><p>Return  <span class="math notranslate nohighlight">\(G_t\)</span>  是从t时刻开始的累计期望激励 <span class="math notranslate nohighlight">\(G_t = R_{t+1} + R_{t+2} + ... = \sum_{k=0}^{\infty} \gamma^{k}R_{t+k+1}\)</span></p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(\mathbf{value \ function}\)</span> 也是MDP中一个非常重要的概念，衡量的是从某个状态开始计算的return期望值，value function一般有两种定义方式:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\mathbf{state\!-\!value \ function}\)</span> : <span class="math notranslate nohighlight">\(v_{\pi}(s) = \mathbb{E}_{\pi}[G_t | S_t = s]\)</span> ，表示的是从状态 <span class="math notranslate nohighlight">\(s\)</span> ，遵循Policy <span class="math notranslate nohighlight">\(\pi\)</span> 的期望return</p></li>
+<li><p><span class="math notranslate nohighlight">\(\mathbf{action\!-\!value \ function}\)</span> : <span class="math notranslate nohighlight">\(q_{\pi}(s,a) = \mathbb{E}_{\pi}[G_t | S_t = s, A_t = a]\)</span> ，则还考虑到了在时刻t的动作</p></li>
+</ul>
+<p>从定义上看， <span class="math notranslate nohighlight">\(v_{\pi}(s)\)</span> 和 <span class="math notranslate nohighlight">\(q_{\pi}\)</span> 是可以相互转换的:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(v_{\pi}(s) = \sum_{a \in A} \pi(a|s) q_{\pi}(s, a)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(q_{\pi}(s,a) = \mathcal{R_s^a + \gamma \sum_{s' \in S} P_{ss'}^a v_{\pi}(s')}\)</span></p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>强化学习的基本思想<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>强化学习的核心思想，是通过与环境的交互、以及环境给予的反馈中，来学习使激励最大化的行为方法。通过与环境的交互反馈来进行学习是人的自然技能。假设你是一个小孩，在客厅里看到了一个壁炉。</p>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="_images/fire1.png"><img alt="_images/fire1.png" src="_images/fire1.png" style="width: 50%;" /></a>
+</div>
+</div></blockquote>
+<p>你靠近它，这时你感觉到很温暖（正反馈+1），你学习到”火”可以给你带来正反馈。</p>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="_images/fire2.png"><img alt="_images/fire2.png" src="_images/fire2.png" style="width: 60%;" /></a>
+</div>
+</div></blockquote>
+<p>但是当你想要去触碰火焰时，火焰会灼伤你的手，这时你会收到一个负反馈，你会感觉到痛（负反馈-1）。通过交互与激励反馈，你学习到的是：火焰在一定范围的距离外，可以提供温暖（正反馈）；但是距离太近，就会被烧伤（负反馈）。这就是人，如何通过与环境的交互进行学习的过程，强化学习主要是利用了这个思想，在Action-&gt;reward的过程中，学习使整体reward最大的策略。</p>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="_images/fire3.png"><img alt="_images/fire3.png" src="_images/fire3.png" style="width: 60%;" /></a>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id3">
+<h2>强化学习的过程<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>以超级玛丽游戏为例，通过强化学习训练一个能玩游戏的智能体（Agent），其过程可以按如下环节进行建模：</p>
+<ul>
+<li><p>智能体从环境（Env.）获取的初始状态（State）为S0。在当前示例中，我们取游戏的第一帧（first frame）作为S0。</p></li>
+<li><p>基于状态S0，智能体采用行动（Action）策略A0。在当前示例中，智能体将向右走一步。</p></li>
+<li><p>当前环境的状态迁移到S1（新的一帧）。</p></li>
+<li><p>环境根据当前的状态（人物还没死亡，reward+1），给智能体激励（reward）反馈R1。</p>
+<blockquote>
+<div><div class="figure align-center">
+<a class="reference internal image-reference" href="_images/superMario.png"><img alt="_images/superMario.png" src="_images/superMario.png" style="width: 100%;" /></a>
+</div>
+</div></blockquote>
+</li>
+</ul>
+<p>强化学习的过程就是不断循环上述过程，并输出（state，action，reward）序列。智能体的目标就是使期望累计reward最大化。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to drl-course’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, brenton
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
