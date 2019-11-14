@@ -20,6 +20,7 @@
 project = 'drl-course'
 copyright = '2019, brenton'
 author = 'brenton'
+master_doc = 'index'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0'
